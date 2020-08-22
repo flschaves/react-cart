@@ -1,13 +1,13 @@
 import React from "react";
 import Header from "../Header";
+import InfoBar from "../InfoBar";
 import Footer from "../Footer";
-import TopBar from "../TopBar";
 
 const Layout = ({ title, children }) => {
 	return (
 		<>
 			<Header />
-			<TopBar />
+			<InfoBar />
 			<main className="container">
 				<h1>{title}</h1>
 				{children}
