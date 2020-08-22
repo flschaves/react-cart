@@ -1,0 +1,33 @@
+.topbar {
+	$itemSpace: 10px;
+
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+
+	padding: 20px 0 15px;
+	margin: {
+		left: -#{$itemSpace};
+		right: -#{$itemSpace};
+	}
+
+	font-size: 12px;
+	line-height: 20px;
+
+	@media (min-width: 768px) {
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+
+	&__item {
+		padding: 0 $itemSpace;
+		svg {
+			vertical-align: middle;
+		}
+	}
+	& > :first-child {
+		@media (min-width: 768px) {
+			margin-right: auto;
+		}
+	}
+}
