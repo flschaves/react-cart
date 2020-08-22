@@ -2,7 +2,7 @@ import React from "react";
 
 import PersonIcon from "@material-ui/icons/Person";
 import LocationIcon from "@material-ui/icons/LocationOn";
-import { WhatsAppIcon } from "../icons";
+import { ReactComponent as WhatsAppIcon } from "../../assets/svg/whatsapp.svg";
 
 import styles from "./index.module.scss";
 
