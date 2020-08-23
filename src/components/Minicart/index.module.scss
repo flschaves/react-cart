@@ -1,0 +1,17 @@
+.minicart {
+  text-decoration: none;
+  color: initial;
+
+  svg {
+    vertical-align: middle;
+    fill: #e53935;
+    margin-right: 5px;
+  }
+
+  &__price {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 25px;
+    letter-spacing: -0.1px;
+  }
+}
