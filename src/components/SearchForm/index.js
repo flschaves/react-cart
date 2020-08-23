@@ -18,7 +18,7 @@ const SearchForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <FormControl>
+      <FormControl fullWidth={true}>
         <InputLabel htmlFor="standard-adornment-password">
           O que você procura?
         </InputLabel>
