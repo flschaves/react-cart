@@ -1,0 +1,35 @@
+.infobar {
+	background-color: #f5f5f5;
+}
+
+.infobar-itens {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+
+	padding: 10px 0;
+
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 20px;
+
+	@media (min-width: 768px) {
+		padding: 20px 0;
+		flex-direction: row;
+		justify-content: space-around;
+	}
+
+	&__item {
+		margin-top: 4px;
+		margin-bottom: 4px;
+		svg {
+			vertical-align: middle;
+			margin-right: 5px;
+			fill: #616161;
+		}
+		@media (min-width: 768px) {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	}
+}
