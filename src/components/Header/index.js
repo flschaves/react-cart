@@ -3,9 +3,11 @@ import TopBar from "../TopBar";
 import Logo from "../Logo";
 import NavBar from "../NavBar";
 
+import styles from "./index.module.scss";
+
 const Header = () => {
   return (
-    <header>
+    <header className={styles.header}>
       <div className="container">
         <TopBar />
         <Logo />
