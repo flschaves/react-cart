@@ -1,6 +1,7 @@
 import React from "react";
 import TopBar from "../TopBar";
 import Logo from "../Logo";
+import NavBar from "../NavBar";
 
 const Header = () => {
   return (
@@ -8,6 +9,7 @@ const Header = () => {
       <div className="container">
         <TopBar />
         <Logo />
+        <NavBar />
       </div>
     </header>
   );
