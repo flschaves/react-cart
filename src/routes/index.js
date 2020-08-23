@@ -6,17 +6,17 @@ const Checkout = React.lazy(() => import("../pages/Checkout"));
 const NotFound = React.lazy(() => import("../pages/NotFound"));
 
 const Routes = () => {
-	return (
-		<React.Suspense fallback={<div>Carregando...</div>}>
-			<Router>
-				<Switch>
-					<Route exact path="/checkout" component={Checkout} />
-					<Route exact path="/" component={Cart} />
-					<Route component={NotFound} />
-				</Switch>
-			</Router>
-		</React.Suspense>
-	);
+  return (
+    <React.Suspense fallback={<div>Carregando...</div>}>
+      <Router>
+        <Switch>
+          <Route exact path="/checkout" component={Checkout} />
+          <Route exact path="/" component={Cart} />
+          <Route component={NotFound} />
+        </Switch>
+      </Router>
+    </React.Suspense>
+  );
 };
 
 export default Routes;
