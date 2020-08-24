@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // const corsURL = "https://cors-anywhere.herokuapp.com/";
-const corsURL = "https://thingproxy.freeboard.io/fetch/";
+// const corsURL = "https://thingproxy.freeboard.io/fetch/";
 
 export default axios.create({
-  baseURL: `${corsURL}https://sandbox.mercos.com/api-teste-front/`,
+  baseURL: `https://5f2c373bffc88500167b8cce.mockapi.io/`,
 });
