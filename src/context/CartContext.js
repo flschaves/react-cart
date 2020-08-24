@@ -3,104 +3,134 @@ import React, { useReducer, useCallback } from "react";
 import mercos from "../service/mercos";
 
 const initialState = {
-  cartItens: [],
+  cartItems: [],
   discounts: [],
+  itemsCount: 0,
+  subtotal: 0,
+  total: 0,
+  loading: true,
+  error: "",
 };
 
-const actions = {};
+export const CartContext = React.createContext(initialState);
 
-export const CartContext = React.createContext({ initialState, actions });
+const updateQuantity = (list, quantity, id) =>
+  list.map((product) => ({
+    ...product,
+    quantidade:
+      product.id === id && product.quantidade + quantity > 0
+        ? product.quantidade + quantity
+        : product.quantidade,
+  }));
 
-const CartReducer = (state, action) => {
+const cartReducer = (state, action) => {
   switch (action.type) {
-    case "GET_ITENS":
-      return { ...state, cartItens: action.payload };
-    case "GET_DISCOUNTS":
+    case "SET_ITEMS":
+      return { ...state, cartItems: action.payload };
+    case "SET_ERROR":
+      return { ...state, error: action.payload };
+    case "SET_LOADING":
+      return { ...state, loading: action.payload };
+    case "SET_DISCOUNTS":
       return { ...state, discounts: action.payload };
-    case "GET_SUBTOTAL":
-      return { ...state, cartItens: action.payload };
-    case "GET_TOTAL":
-      return { ...state, cartItens: action.payload };
-    case "GET_TOTAL_ITENS":
-      return { ...state, cartItens: action.payload };
     case "INCREASE":
-      return { ...state, cartItens: action.payload };
+      return {
+        ...state,
+        cartItems: updateQuantity(state.cartItems, 1, action.payload.id),
+      };
     case "DECREASE":
-      return { ...state, cartItens: action.payload };
-    case "ADD_ITEM":
-      return { ...state, cartItens: action.payload };
+      return {
+        ...state,
+        cartItems: updateQuantity(state.cartItems, -1, action.payload.id),
+      };
     case "REMOVE_ITEM":
-      return { ...state, cartItens: action.payload };
+      return {
+        ...state,
+        cartItems: [
+          ...state.cartItems.filter(
+            (product) => product.id !== action.payload.id
+          ),
+        ],
+      };
     case "ADD_NOTE":
-      return { ...state, cartItens: action.payload };
+      return { ...state, cartItems: [...state.cartItems] };
     default:
       return state;
   }
 };
 
 const CartContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(CartReducer, initialState);
+  const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  const getItens = useCallback(
+  const setItems = useCallback(
     async (payload) => {
-      const response = await mercos.get("/carrinho");
+      try {
+        const response = await mercos.get("/carrinho");
 
-      dispatch({ type: "GET_ITENS", payload: response.data });
+        dispatch({ type: "SET_ITEMS", payload: response.data });
+      } catch (err) {
+        dispatch({ type: "SET_ERROR", payload: err.message });
+      } finally {
+        dispatch({ type: "SET_LOADING", payload: false });
+      }
     },
     [dispatch]
   );
 
-  const getDiscounts = useCallback(
+  const setDiscounts = useCallback(
     async (payload) => {
-      const response = await mercos.get("/politicas-comerciais");
+      try {
+        const response = await mercos.get("/politicas-comerciais");
 
-      dispatch({ type: "GET_DISCOUNTS", payload: response.data });
+        dispatch({ type: "SET_DISCOUNTS", payload: response.data });
+      } catch (err) {
+        dispatch({ type: "SET_ERROR", payload: err.message });
+      } finally {
+        dispatch({ type: "SET_LOADING", payload: false });
+      }
     },
     [dispatch]
   );
 
-  const getSubtotal = (payload) => {
-    dispatch({ type: "GET_TOTAL", payload });
-  };
+  const increase = useCallback(
+    (payload) => {
+      dispatch({ type: "INCREASE", payload });
+    },
+    [dispatch]
+  );
 
-  const getTotal = (payload) => {
-    dispatch({ type: "GET_SUBTOTAL", payload });
-  };
+  const decrease = useCallback(
+    (payload) => {
+      dispatch({ type: "DECREASE", payload });
+    },
+    [dispatch]
+  );
 
-  const getTotalItens = (payload) => {
-    dispatch({ type: "GET_TOTAL_ITENS", payload });
-  };
+  const removeItem = useCallback(
+    (payload) => {
+      dispatch({ type: "REMOVE_ITEM", payload });
+    },
+    [dispatch]
+  );
 
-  const increase = (payload) => {
-    dispatch({ type: "INCREASE", payload });
-  };
+  const addNote = useCallback(
+    (payload) => {
+      dispatch({ type: "ADD_NOTE", payload });
+    },
+    [dispatch]
+  );
 
-  const decrease = (payload) => {
-    dispatch({ type: "DECREASE", payload });
-  };
-
-  const removeProduct = (payload) => {
-    dispatch({ type: "REMOVE_ITEM", payload });
-  };
-
-  const addNote = (payload) => {
-    dispatch({ type: "ADD_NOTE", payload });
-  };
-
-  const contextValues = {
-    getItens,
-    getDiscounts,
-    getSubtotal,
-    getTotal,
-    getTotalItens,
-    removeProduct,
+  const actions = {
+    setItems,
+    setDiscounts,
+    removeItem,
     increase,
     decrease,
     addNote,
   };
 
   return (
-    <CartContext.Provider value={{ state, actions: { ...contextValues } }}>
+    <CartContext.Provider value={{ state, actions }}>
       {children}
     </CartContext.Provider>
   );

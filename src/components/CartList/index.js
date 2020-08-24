@@ -5,12 +5,12 @@ import { CartContext } from "../../context/CartContext";
 
 const CartList = () => {
   const {
-    state: { cartItens },
+    state: { cartItems },
   } = useContext(CartContext);
 
   return (
     <div>
-      {cartItens.map((product) => (
+      {cartItems.map((product) => (
         <CartItem key={product.id} product={product} />
       ))}
     </div>

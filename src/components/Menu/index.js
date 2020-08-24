@@ -13,8 +13,8 @@ const Menu = () => {
       <MenuIcon className={styles.menu__sandwich} onClick={() => toggleVisible(!visible)} />
 
       <div
-        className={`${styles.menu__itens} ${
-          visible ? styles["menu__itens--active"] : ""
+        className={`${styles.menu__items} ${
+          visible ? styles["menu__items--active"] : ""
         }`}
       >
         <Link to="/setores">Setores</Link>
