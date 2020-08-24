@@ -24,10 +24,10 @@ const Cart = () => {
   return (
     <Layout title="Carrinho">
       <div className={styles["page-cart"]}>
-        <div className={styles["page-cart--list"]}>
+        <div className={styles["page-cart__list"]}>
           {cartItens.length === 0 ? <CircularProgress fontSize="small" /> : <CartList />}
         </div>
-        <div className={styles["page-cart--resume"]}>
+        <div className={styles["page-cart__resume"]}>
           {discounts.length === 0 ? <CircularProgress fontSize="small" /> : <CartResume />}
         </div>
       </div>

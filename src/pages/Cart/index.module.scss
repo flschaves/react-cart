@@ -2,7 +2,7 @@
   display: flex;
   flex-wrap: wrap;
 
-  &--list {
+  &__list {
     margin-bottom: 30px;
     @media (min-width: 768px) {
       margin-right: 70px;
@@ -10,7 +10,7 @@
     }
   }
 
-  &--resume {
+  &__resume {
     @media (min-width: 768px) {
       flex-grow: 1;
     }
