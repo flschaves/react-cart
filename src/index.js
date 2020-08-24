@@ -4,9 +4,13 @@ import "./index.scss";
 import Routes from "./routes";
 import * as serviceWorker from "./serviceWorker";
 
+import CartContextProvider from "./context/CartContext";
+
 ReactDOM.render(
   <React.StrictMode>
-    <Routes />
+    <CartContextProvider>
+      <Routes />
+    </CartContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
