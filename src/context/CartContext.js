@@ -1,6 +1,6 @@
 import React, { useReducer, useCallback } from "react";
 import getCartTotals from "../helpers/getCartTotals";
-import mercos from "../service/mercos";
+import api from "../service/api";
 
 const initialState = {
   cartItems: [],
@@ -110,7 +110,7 @@ const CartContextProvider = ({ children }) => {
   const setItems = useCallback(
     async (payload) => {
       try {
-        const response = await mercos.get("/carrinho");
+        const response = await api.get("/carrinho");
 
         dispatch({ type: "SET_ITEMS", payload: response.data });
       } catch (err) {
@@ -125,7 +125,7 @@ const CartContextProvider = ({ children }) => {
   const setDiscountPolicy = useCallback(
     async (payload) => {
       try {
-        const response = await mercos.get("/politicas-comerciais");
+        const response = await api.get("/politicas-comerciais");
 
         dispatch({ type: "SET_DISCOUNT_POLICY", payload: response.data });
       } catch (err) {
@@ -168,7 +168,7 @@ const CartContextProvider = ({ children }) => {
   const handleCheckout = useCallback(
     async (payload) => {
       try {
-        const response = await mercos.post("/carrinho", payload);
+        const response = await api.post("/carrinho", payload);
 
         dispatch({ type: "SET_CHECKOUT_SUCCESS", payload: response.data });
       } catch (err) {
