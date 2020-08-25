@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import Button from "../Button";
 
 import { CartContext } from "../../context/CartContext";
 
@@ -13,10 +15,34 @@ const CartResume = () => {
 
   return (
     <div className={styles["cart-resume"]}>
-      <div>Itens: {itemsCount}</div>
-      <div>Total em produtos: {formatPrice(subtotal)}</div>
-      <div>Descontos: {formatPrice(discount)}</div>
-      <div>Total: {formatPrice(total)}</div>
+      <div className={styles["cart-resume__header"]}>Resumo do Pedido</div>
+      <div className={styles["cart-resume__body"]}>
+        <div
+          className={`${styles["cart-resume__body-line"]} ${styles["cart-resume__body-line--items"]}`}
+        >
+          Itens <span>{itemsCount}</span>
+        </div>
+        <div
+          className={`${styles["cart-resume__body-line"]} ${styles["cart-resume__body-line--subtotal"]}`}
+        >
+          Total em produtos <span>{formatPrice(subtotal)}</span>
+        </div>
+        <div
+          className={`${styles["cart-resume__body-line"]} ${styles["cart-resume__body-line--discount"]}`}
+        >
+          Descontos <span>{formatPrice(discount)}</span>
+        </div>
+        <div
+          className={`${styles["cart-resume__body-line"]} ${styles["cart-resume__body-line--total"]}`}
+        >
+          Total <span>{formatPrice(total)}</span>
+        </div>
+      </div>
+      <div className={styles["cart-resume__footer"]}>
+        <Link to="/checkout">
+          <Button style={{ width: "100%" }}>Finalizar a compra</Button>
+        </Link>
+      </div>
     </div>
   );
 };

@@ -1,3 +1,47 @@
 .cart-resume {
   border: 1px solid #e0e0e0;
+
+  &__header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #e0e0e0;
+
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 25px;
+    letter-spacing: 0.1px;
+  }
+
+  &__body {
+    padding: 20px;
+
+    &-line {
+      display: flex;
+      flex-wrap: wrap;
+
+      font-size: 14px;
+      line-height: 30px;
+
+      span {
+        margin-left: auto;
+
+        font-weight: 500;
+      }
+      &--total {
+        padding-top: 20px;
+
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 30px;
+
+        span {
+          font-weight: inherit;
+        }
+      }
+    }
+  }
+
+  &__footer {
+    padding: 0 20px 20px;
+  }
 }
