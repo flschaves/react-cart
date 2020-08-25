@@ -15,13 +15,19 @@ const initialState = {
 
 export const CartContext = React.createContext(initialState);
 
-const updateQuantity = (list, quantity, id) =>
-  list.map((product) => ({
+const updateQuantity = (cartItems, id, quantity) =>
+  cartItems.map((product) => ({
     ...product,
     quantidade:
       product.id === id && product.quantidade + quantity > 0
         ? product.quantidade + quantity
         : product.quantidade,
+  }));
+
+const updateObservation = (cartItems, id, observation) =>
+  cartItems.map((product) => ({
+    ...product,
+    observacao: product.id === id ? observation : "",
   }));
 
 const updateCart = (cartItems, discountPolicy) => {
@@ -51,7 +57,7 @@ const cartReducer = (state, action) => {
       return {
         ...state,
         ...updateCart(
-          updateQuantity(state.cartItems, 1, action.payload.id),
+          updateQuantity(state.cartItems, action.payload.id, 1),
           state.discountPolicy
         ),
       };
@@ -59,7 +65,7 @@ const cartReducer = (state, action) => {
       return {
         ...state,
         ...updateCart(
-          updateQuantity(state.cartItems, -1, action.payload.id),
+          updateQuantity(state.cartItems, action.payload.id, -1),
           state.discountPolicy
         ),
       };
@@ -75,8 +81,18 @@ const cartReducer = (state, action) => {
           state.discountPolicy
         ),
       };
-    case "ADD_NOTE":
-      return { ...state, cartItems: [...state.cartItems] };
+    case "SET_OBSERVATION":
+      return {
+        ...state,
+        ...updateCart(
+          updateObservation(
+            state.cartItems,
+            action.payload.product.id,
+            action.payload.observation
+          ),
+          state.discountPolicy
+        ),
+      };
     default:
       return state;
   }
@@ -136,9 +152,9 @@ const CartContextProvider = ({ children }) => {
     [dispatch]
   );
 
-  const addNote = useCallback(
+  const setObservation = useCallback(
     (payload) => {
-      dispatch({ type: "ADD_NOTE", payload });
+      dispatch({ type: "SET_OBSERVATION", payload });
     },
     [dispatch]
   );
@@ -149,7 +165,7 @@ const CartContextProvider = ({ children }) => {
     removeItem,
     increase,
     decrease,
-    addNote,
+    setObservation,
   };
 
   return (

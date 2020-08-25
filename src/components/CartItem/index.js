@@ -13,9 +13,9 @@ import styles from "./index.module.scss";
 
 const CartItem = ({ product }) => {
   const {
-    actions: { increase, decrease, removeItem, addNote },
+    actions: { increase, decrease, removeItem, setObservation },
   } = useContext(CartContext);
-  
+
   return (
     <div className={styles["cart-item"]}>
       <div className={styles["cart-item__image"]}>
@@ -24,17 +24,15 @@ const CartItem = ({ product }) => {
       <div className={styles["cart-item__meta"]}>
         <div className={styles["cart-item__meta-title"]}>{product.nome}</div>
         <div className={styles["cart-item__meta-sku"]}>SKU {product.sku}</div>
-        <div
-          className={`${styles["cart-item__meta-observation"]} ${
-            product.observacao
-              ? styles["cart-item__meta-observation--has-observation"]
-              : ""
-          }`}
-        >
+        <div className={styles["cart-item__meta-observation"]}>
           <CommentIcon fontSize="small" />
-          <span>
-            {product.observacao ? product.observacao : "Adicionar observação"}
-          </span>
+          <input
+            type="text"
+            onBlur={(event) =>
+              setObservation({ product, observation: event.target.value })
+            }
+            placeholder="Adicionar observação"
+          />
         </div>
       </div>
       <div className={styles["cart-item__quantity"]}>
