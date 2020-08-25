@@ -11,8 +11,6 @@
   }
 
   &__resume {
-    @media (min-width: 768px) {
-      flex-grow: 1;
-    }
+    flex-grow: 1;
   }
 }
