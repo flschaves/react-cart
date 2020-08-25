@@ -11,6 +11,7 @@ const initialState = {
   total: 0,
   loading: true,
   error: "",
+  checkoutSuccess: false,
 };
 
 export const CartContext = React.createContext(initialState);
@@ -93,6 +94,11 @@ const cartReducer = (state, action) => {
           state.discountPolicy
         ),
       };
+    case "SET_CHECKOUT_SUCCESS":
+      return {
+        ...state,
+        checkoutSuccess: true,
+      };
     default:
       return state;
   }
@@ -159,6 +165,19 @@ const CartContextProvider = ({ children }) => {
     [dispatch]
   );
 
+  const handleCheckout = useCallback(
+    async (payload) => {
+      try {
+        const response = await mercos.post("/carrinho", payload);
+
+        dispatch({ type: "SET_CHECKOUT_SUCCESS", payload: response.data });
+      } catch (err) {
+        dispatch({ type: "SET_ERROR", payload: err.message });
+      }
+    },
+    [dispatch]
+  );
+
   const actions = {
     setItems,
     setDiscountPolicy,
@@ -166,6 +185,7 @@ const CartContextProvider = ({ children }) => {
     increase,
     decrease,
     setObservation,
+    handleCheckout,
   };
 
   return (
