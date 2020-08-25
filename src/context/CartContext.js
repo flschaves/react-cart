@@ -1,12 +1,13 @@
 import React, { useReducer, useCallback } from "react";
-
+import getCartTotals from "../helpers/getCartTotals";
 import mercos from "../service/mercos";
 
 const initialState = {
   cartItems: [],
-  discounts: [],
+  discountPolicy: [],
   itemsCount: 0,
   subtotal: 0,
+  discount: 0,
   total: 0,
   loading: true,
   error: "",
@@ -23,34 +24,56 @@ const updateQuantity = (list, quantity, id) =>
         : product.quantidade,
   }));
 
+const updateCart = (cartItems, discountPolicy) => {
+  return {
+    cartItems,
+    ...getCartTotals(cartItems, discountPolicy),
+  };
+};
+
 const cartReducer = (state, action) => {
   switch (action.type) {
     case "SET_ITEMS":
-      return { ...state, cartItems: action.payload };
+      return {
+        ...state,
+        ...updateCart(action.payload, state.discountPolicy),
+      };
     case "SET_ERROR":
       return { ...state, error: action.payload };
     case "SET_LOADING":
       return { ...state, loading: action.payload };
-    case "SET_DISCOUNTS":
-      return { ...state, discounts: action.payload };
+    case "SET_DISCOUNT_POLICY":
+      return {
+        ...state,
+        discountPolicy: action.payload,
+      };
     case "INCREASE":
       return {
         ...state,
-        cartItems: updateQuantity(state.cartItems, 1, action.payload.id),
+        ...updateCart(
+          updateQuantity(state.cartItems, 1, action.payload.id),
+          state.discountPolicy
+        ),
       };
     case "DECREASE":
       return {
         ...state,
-        cartItems: updateQuantity(state.cartItems, -1, action.payload.id),
+        ...updateCart(
+          updateQuantity(state.cartItems, -1, action.payload.id),
+          state.discountPolicy
+        ),
       };
     case "REMOVE_ITEM":
       return {
         ...state,
-        cartItems: [
-          ...state.cartItems.filter(
-            (product) => product.id !== action.payload.id
-          ),
-        ],
+        ...updateCart(
+          [
+            ...state.cartItems.filter(
+              (product) => product.id !== action.payload.id
+            ),
+          ],
+          state.discountPolicy
+        ),
       };
     case "ADD_NOTE":
       return { ...state, cartItems: [...state.cartItems] };
@@ -77,12 +100,12 @@ const CartContextProvider = ({ children }) => {
     [dispatch]
   );
 
-  const setDiscounts = useCallback(
+  const setDiscountPolicy = useCallback(
     async (payload) => {
       try {
         const response = await mercos.get("/politicas-comerciais");
 
-        dispatch({ type: "SET_DISCOUNTS", payload: response.data });
+        dispatch({ type: "SET_DISCOUNT_POLICY", payload: response.data });
       } catch (err) {
         dispatch({ type: "SET_ERROR", payload: err.message });
       } finally {
@@ -122,7 +145,7 @@ const CartContextProvider = ({ children }) => {
 
   const actions = {
     setItems,
-    setDiscounts,
+    setDiscountPolicy,
     removeItem,
     increase,
     decrease,

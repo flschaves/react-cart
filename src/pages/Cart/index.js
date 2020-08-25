@@ -12,13 +12,13 @@ import styles from "./index.module.scss";
 const Cart = () => {
   const {
     state: { loading, error },
-    actions: { setItems, setDiscounts },
+    actions: { setItems, setDiscountPolicy },
   } = useContext(CartContext);
 
   useEffect(() => {
     setItems();
-    setDiscounts();
-  }, [setItems, setDiscounts]);
+    setDiscountPolicy();
+  }, [setItems, setDiscountPolicy]);
 
   return (
     <Layout title="Carrinho">
